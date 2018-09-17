@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Aman creat at 下午10:31:03-->
+<mx:Canvas xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		   xmlns:s="library://ns.adobe.com/flex/spark" 
+		   xmlns:mx="library://ns.adobe.com/flex/mx" 
+		   creationComplete="init(event)" resize="onResize(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import mx.events.ResizeEvent;
+			
+			public static const RealSize:String = "real";
+			public static const ZoomSize:String = "zoom";
+			
+			private var _displayType:String = RealSize;
+			
+			private var _loaded:Boolean = false;
+			
+			
+			private function init($e:FlexEvent):void{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public function setData($url:String):void{
+				img.source = $url;
+			}
+			
+			private function onLoad($e:Event):void{
+				core.scaleX = core.scaleY = 1;
+//				core.width = bg.width = img.width;
+//				core.height = bg.height = img.height;
+				onResize()
+			}
+			
+			private function onResize($e:ResizeEvent=null):void{
+				if(!img.bitmapData){
+					return;
+				}
+				//TODO...
+			}
+			
+//getter and setter
+			public function getBmd():BitmapData{
+				return null;
+			}
+			
+			public function set displayType($type:String):void{
+				if($type==_displayType){
+					return;
+				}
+				_displayType = $type
+				onResize();
+			}
+			
+		]]>
+	</fx:Script>
+	<mx:Canvas id="core"
+			   horizontalScrollPolicy="off" verticalScrollPolicy="off">
+		<s:Image id="img" resize="{}" complete="onLoad(event)"/>
+	</mx:Canvas>
+	
+</mx:Canvas>

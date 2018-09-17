@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Aman creat at 下午11:04:15-->
+<mx:HBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		   xmlns:s="library://ns.adobe.com/flex/spark" 
+		   xmlns:mx="library://ns.adobe.com/flex/mx" 
+		   backgroundColor="0x009cff" >
+	
+	<fx:Script>
+		<![CDATA[
+			import com.zw.event.ZEvent;
+			
+			import mx.events.SliderEvent;
+			
+			public static const SelectImage:String = "selectImage";
+			public static const SelectAddress:String = "selectAddress";
+			public static const Save:String = "save";
+			public static const RealSize:String = "realSize";
+			public static const ZoomSize:String = "zoomSize";
+			
+			private function onClick($e:Event):void{
+				var s:String = "";
+				switch($e.currentTarget){
+					case btn_image:
+						s = SelectImage;
+						break;
+					case btn_address:
+						s = SelectAddress;
+						break;
+					case btn_save:
+						s = Save;
+						break;
+					case btn_realSize:
+						s = RealSize;
+						break;
+					case btn_zoomSize:
+						s = ZoomSize;
+						break;
+				}
+				if(s){
+					this.dispatchEvent(new ZEvent(s));
+				}
+			}
+			
+//Listener
+			private function onChange($e:Event):void{
+				var r:Rectangle = new Rectangle(slider_left.value , slider_top.value)
+				r.right = slider_right.value;
+				r.bottom = slider_bottom.value;
+				
+				if($e is SliderEvent){
+					var v:Number = ($e as SliderEvent).value
+					switch($e.currentTarget){
+						case slider_left:
+							r.left = v;
+							break;
+						case slider_right:
+							r.right = v;
+							break
+						case slider_top:
+							r.top = v;
+							break
+						case slider_bottom:
+							r.bottom = v;
+							break
+					}
+				}
+				
+				var evt:ZEvent = new ZEvent(ZEvent.Change , r);
+				this.dispatchEvent(evt);
+			}
+			
+			
+//interface
+			public function setSize($width:int, $height:int):void{
+				slider_left.maximum = $width;
+				slider_right.maximum = $width
+				slider_top.maximum = $height;
+				slider_bottom.maximum = $height
+			}
+			
+		]]>
+	</fx:Script>
+	<mx:VBox id="core_btn" 
+			 height="100%"
+			horizontalScrollPolicy="off" verticalScrollPolicy="off" verticalGap="0">
+		
+		<mx:HBox 
+			horizontalGap="5" paddingTop="5" paddingLeft="10" height="{core_btn.height/2}">
+			<s:Button id="btn_image" label="选图" click="onClick(event)"/>
+			<s:Button id="btn_address" label="目录" click="onClick(event)"/>
+			<s:Button id="btn_save" label="保存" click="onClick(event)"/>
+		</mx:HBox>
+		
+		<mx:HBox 
+			horizontalGap="5" paddingTop="5" paddingLeft="10" height="{core_btn.height/2}">
+			<s:Button id="btn_realSize" label="原始大小" click="onClick(event)"/>
+			<s:Button id="btn_zoomSize" label="自适应大小" click="onClick(event)"/>
+		</mx:HBox>
+	</mx:VBox>
+	
+	<mx:Canvas id="core_silder"
+			   horizontalScrollPolicy="off" verticalScrollPolicy="off"
+			  width="100%" height="100%">
+		<s:Label id="label_top" x="10" y="6" text="上"/>
+		<s:Label id="label_bottom" x="{core_silder.width/2+3}" y="{label_top.y}" text="下"/>
+		<s:Label id="label_left" x="{label_top.x}" y="{label_top.y + core_silder.height/2}" text="左"/>
+		<s:Label id="label_right" x="{label_bottom.x}" y="{label_left.y}" text="右"/>
+		
+		<mx:Slider id="slider_top" 
+				   y="{label_top.y+3}" x="{label_top.x+20}" width="{core_silder.width/2 - 30}"
+				   snapInterval="1" thumbDrag="onChange(event)" change="onChange(event)"/>
+		<mx:Slider id="slider_bottom" 
+				   y="{slider_top.y}" x="{label_bottom.x+20}" width="{slider_top.width}"
+				   snapInterval="1" thumbDrag="onChange(event)" change="onChange(event)"/>
+		<mx:Slider id="slider_left" 
+				   y="{label_left.y+3}" x="{label_left.x+20}" width="{slider_top.width}"
+				   snapInterval="1" thumbDrag="onChange(event)" change="onChange(event)"/>
+		<mx:Slider id="slider_right"  
+				   y="{slider_left.y}" x="{label_right.x+20}" width="{slider_top.width}"
+				   snapInterval="1" thumbDrag="onChange(event)" change="onChange(event)"/>
+	</mx:Canvas>
+
+</mx:HBox>

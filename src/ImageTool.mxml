@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx" 
+					   xmlns:local="*" xmlns:ui="ui.*"
+					   creationComplete="init(event)" resize="onResize(event)"
+					   showStatusBar="false" backgroundColor="#666666">
+	<fx:Script>
+		<![CDATA[
+			import com.zw.event.ZEvent;
+			
+			import mx.events.FlexEvent;
+			import mx.events.ResizeEvent;
+			
+			import tools.DirectorySelecter;
+			import tools.ImageSelecter;
+			import tools.MySaver;
+			
+			private var _selecter_dir:DirectorySelecter;
+			private var _selecter_image:ImageSelecter;
+			private var _saver:MySaver;
+			private var _loader:Loader;
+			
+			private function init(event:FlexEvent):void{
+				maximize()
+				_selecter_dir = new DirectorySelecter();
+				_selecter_image = new ImageSelecter();
+				_saver = new MySaver();
+				_loader = new Loader();
+				
+				var a:Array = [Operation.SelectAddress , Operation.SelectImage , 
+					Operation.Save , Operation.RealSize , Operation.ZoomSize];
+				for (var i:int = 0; i < a.length; i++){
+					oper.addEventListener(a[i] , onOperation);
+				}
+				
+				_selecter_image.addEventListener(Event.SELECT , onSelecter);
+				_loader.contentLoaderInfo.addEventListener(Event.COMPLETE , onLoad);
+				oper.addEventListener(ZEvent.Change , onChange);
+				onResize();
+			}
+			
+//Listener
+			private function onOperation($e:ZEvent):void{
+				switch($e.type){
+					case Operation.SelectAddress:
+						_selecter_dir.browseForDirectory("请选取文件夹");
+						break;
+					case Operation.SelectImage:
+						_selecter_image.selectImage();
+						break
+					case Operation.Save: 
+						var b:BitmapData = img.getBmd();
+						if(b){
+							_saver.save(b , _selecter_image.name , _selecter_dir.nativePath);
+						}
+						break;
+					case Operation.RealSize:
+						img.displayType = ImageDisplay.RealSize;
+						break;
+					case Operation.ZoomSize:
+						img.displayType = ImageDisplay.ZoomSize;
+						break;
+				}
+			}
+			
+			private function onChange($e:ZEvent):void{
+				var r:Rectangle = $e.data as Rectangle;
+				img.cut(r)
+			}
+			
+			private function onSelecter($e:Event):void{
+				var r:URLRequest = new URLRequest(_selecter_image.nativePath);
+				_loader.load(r)
+			}
+			
+			
+			private function onLoad($e:Event=null):void{
+//				img.bitmapData = loader.bitmapData;
+				var b:BitmapData = (_loader.content as Bitmap).bitmapData;
+				img.bitmapData = b;
+				oper.setSize(b.width , b.height)
+			}
+			
+			private function onResize($e:ResizeEvent=null):void{
+				if(this.initialized){
+					img.setSize(this.width , this.height-60);
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<ui:ImgCanvas id="img" />
+	
+	<local:Operation id="oper"
+		bottom="0" width="100%" height="60"/>
+</s:WindowedApplication>
