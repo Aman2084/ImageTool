@@ -79,6 +79,12 @@
 				slider_bottom.maximum = $height
 			}
 			
+			protected function onCheck($e:Event):void{
+				var s:String = check.selected ? ZEvent.Out : ZEvent.In;
+				var e:ZEvent = new ZEvent(s)
+				this.dispatchEvent(e);
+			}
+			
 		]]>
 	</fx:Script>
 	<mx:VBox id="core_btn" 
@@ -96,6 +102,7 @@
 			horizontalGap="5" paddingTop="5" paddingLeft="10" height="{core_btn.height/2}">
 			<s:Button id="btn_realSize" label="原始大小" click="onClick(event)"/>
 			<s:Button id="btn_zoomSize" label="自适应大小" click="onClick(event)"/>
+			<s:CheckBox id="check" label="外扩" selected="true" change="onCheck(event)"/>
 		</mx:HBox>
 	</mx:VBox>
 	

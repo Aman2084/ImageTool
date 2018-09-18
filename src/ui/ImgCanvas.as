@@ -19,75 +19,45 @@ package ui
 		public static const RealSize:String = "real";
 		public static const ZoomSize:String = "zoom";
 		
-		private var _w:Number = 0;
-		private var _h:Number = 0;
+		protected var _w:Number = 0;
+		protected var _h:Number = 0;
 		
-		private var _displayType:String = RealSize;
+		protected var _displayType:String = RealSize;
 		private var _loaded:Boolean = false;
 		
-		private var _core:Sprite;
-		private var _bmp:Bitmap;
-		private var _shp_bg:Shape;
-		private var _shp:Shape;
-		private var _rect:Rectangle;
+		protected var _core:Sprite;
+		protected var _bmp:Bitmap;
+		protected var _shp_bg:Shape;
+		protected var _rect:Rectangle;
 		
 		public function ImgCanvas(){
 			_core = new Sprite();
 			this.addChild(_core);
 			
 			super();
+			
 			addChildren();
 			initEvents()
 		}
 		
 //init
-		private function addChildren():void{
-			_bmp = new Bitmap()
-			_shp = new Shape();
-			var g:Graphics = _shp.graphics;
-			g.beginFill(0x000000);
-			g.drawRect(0 , 0 , 64 , 64);
-			g.endFill();
-			
+		protected function addChildren():void{
 			_shp_bg = new Shape();
-			g = _shp_bg.graphics;
+			var g:Graphics = _shp_bg.graphics;
 			g.beginFill(0xffffff , 0.2);
 			g.drawRect(0 , 0 , 64 , 64);
 			g.endFill();
-			
 			_core.addChild(_shp_bg);
-			_core.addChild(_shp);
+			
+			_bmp = new Bitmap()
 			_core.addChild(_bmp);
-			_bmp.mask = _shp;
 			_bmp.smoothing = true;
 		}
 		
-		private function initEvents():void{
-			
-		}
+		private function initEvents():void{}
 		
 //Tools
-		private function resize():void{
-			if(!_bmp.bitmapData){
-				return
-			}
-
-			_core.scaleX = _core.scaleY = 1;
-			var r_inner:Rectangle = new Rectangle(0 , 0 , _bmp.width , _bmp.height);
-			var r_out:Rectangle = new Rectangle(0 , 0 , _w , _h);
-			
-			switch(_displayType){
-				case ZoomSize:
-					var r:Rectangle = Utils_Geom.equalScal2Outter(r_inner , r_out);
-					Utils_UI.setPosAndSize(_core , r);
-					break;
-				case RealSize:
-					var p:Point = Utils_Geom.centerOrLR(r_inner , r_out);
-					_core.x = p.x;
-					_core.y = p.y;
-					break;
-			}
-		}
+		protected function resize():void{}
 		
 //Listener		
 		
@@ -100,27 +70,8 @@ package ui
 			resize();
 		}
 		
-		public function cut($r:Rectangle=null):void{
-			if(!_bmp.bitmapData){
-				return;
-			}
-			
-			var b:BitmapData = _bmp.bitmapData;
-			if(!$r){
-				_rect = new Rectangle(0 , 0 , b.width , b.height)
-			}else{
-				var r:Rectangle = _bmp.bitmapData.rect.clone();
-				r.width -= ($r.left + $r.right);
-				r.height -= ($r.top + $r.bottom)
-				r.x = $r.left;
-				r.y = $r.top;
-				r.width = Math.max(r.width , 0);
-				r.height = Math.max(r.height , 0);
-				_rect = r;
-			}
-			Utils_UI.setPosAndSize(_shp , _rect);
-			Utils_UI.setPosAndSize(_shp_bg , _rect);
-		}
+		public function change($r:Rectangle=null):void{}
+		
 		
 //getter and setter
 		
@@ -131,15 +82,12 @@ package ui
 			}else{
 				_displayType = RealSize;
 			}
-			
 			resize();
-			cut();
+			change();
 		}
 		
 		public function getBmd():BitmapData{
-			var b:BitmapData = new BitmapData(_rect.width , _rect.height , true , 0x00000000);
-			b.copyPixels(_bmp.bitmapData , _rect , new Point());
-			return b;
+			return null;
 		}
 		
 		public function set displayType($type:String):void{
