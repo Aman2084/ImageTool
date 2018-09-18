@@ -7,9 +7,10 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import com.zw.event.ZEvent;
+			import com.aman.event.ZEvent;
 			
 			import mx.events.SliderEvent;
+			
 			
 			public static const SelectImage:String = "selectImage";
 			public static const SelectAddress:String = "selectAddress";
