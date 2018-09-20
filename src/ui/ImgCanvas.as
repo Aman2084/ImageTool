@@ -1,14 +1,10 @@
 package ui
 {
-	import com.aman.utils.Utils_Geom;
-	import com.aman.utils.Utils_UI;
-	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import mx.core.UIComponent;

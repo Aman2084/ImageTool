@@ -3,7 +3,7 @@
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
 					   xmlns:mx="library://ns.adobe.com/flex/mx" 
 					   xmlns:local="*" xmlns:ui="ui.*"
-					   showStatusBar="false" backgroundColor="#666666" xmlns:border="com.border.*" creationComplete="inited()">
+					   showStatusBar="false" backgroundColor="#666666" xmlns:border="com.border.*" creationComplete="inited()" xmlns:com="com.*">
 	
 	<fx:Script>
 		<![CDATA[
