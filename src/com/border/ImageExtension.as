@@ -8,7 +8,6 @@
 package com.border
 {
 	import com.aman.utils.Utils_Geom;
-	import com.aman.utils.Utils_UI;
 	
 	import flash.display.BitmapData;
 	import flash.display.Graphics;
@@ -65,7 +64,7 @@ package com.border
 				_rect.top -= $r.top;
 				_rect.left -= $r.left;
 				_rect.bottom += $r.bottom;
-				_rect.right += $r.bottom;
+				_rect.right += $r.right;
 			}
 			var g:Graphics = _shp_bg.graphics;
 			g.clear();
@@ -77,7 +76,7 @@ package com.border
 		override public function getBmd():BitmapData{
 			var b:BitmapData = new BitmapData(_rect.width , _rect.height , true , 0x00000000);
 			
-			var p:Point = new Point(-_rect.top , -_rect.left);
+			var p:Point = new Point(-_rect.left , -_rect.top);
 			b.copyPixels(_bmp.bitmapData , b.rect , p);
 			return b
 		}

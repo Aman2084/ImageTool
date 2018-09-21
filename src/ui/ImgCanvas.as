@@ -1,10 +1,14 @@
 package ui
 {
+	import com.aman.utils.Utils_Geom;
+	import com.aman.utils.Utils_UI;
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import mx.core.UIComponent;
@@ -53,7 +57,26 @@ package ui
 		private function initEvents():void{}
 		
 //Tools
-		protected function resize():void{}
+		protected function resize():void{
+			if(!_bmp.bitmapData){
+				return
+			}
+			_core.scaleX = _core.scaleY = 1;
+			var r_inner:Rectangle = new Rectangle(0 , 0 , _bmp.width , _bmp.height);
+			var r_out:Rectangle = new Rectangle(0 , 0 , _w , _h);
+			
+			switch(_displayType){
+				case ZoomSize:
+					var r:Rectangle = Utils_Geom.equalScal2Outter(r_inner , r_out);
+					Utils_UI.setPosAndSize(_core , r);
+					break;
+				case RealSize:
+					var p:Point = Utils_Geom.centerOrLR(r_inner , r_out);
+					_core.x = p.x;
+					_core.y = p.y;
+					break;
+			}
+		}
 		
 //Listener		
 		

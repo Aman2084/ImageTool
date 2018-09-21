@@ -77,7 +77,7 @@ package com.tools
 							while(f.exists){
 								s = "_" + s;
 								f.nativePath = ToolsInstance.directory.path;
-								f.resolvePath(s)
+								f = f.resolvePath(s)
 							}
 							saveFile(f);
 							break

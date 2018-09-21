@@ -25,7 +25,7 @@
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
     <buildTarget buildTargetName="default" platformId="default">
-      <airSettings airCertificatePath="C:/Users/Administrator/Desktop/Book/zwimg.p12" airTimestamp="false" anePathSet="true" version="1">
+      <airSettings airCertificatePath="G:/我的文档/Aman.p12" airTimestamp="false" anePathSet="true" version="1">
         <airExcludes/>
         <anePaths/>
         <newLaunchParams/>

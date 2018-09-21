@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Aman creat at 2018-9-20 下午7:13:43-->
+<mx:VBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 backgroundColor="0x009cff">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.aman.event.ZEvent;
+			import com.border.Operation;
+			private function onGroup($e:Event):void{
+				var s:String = "";
+				switch(group.selection){
+					case radio_normal:
+						s = ImageFlip.Type_Normal;
+						break
+					case radio_horizontal:
+						s = ImageFlip.Type_Horizontal;
+						break
+					case radio_vertical:
+						s = ImageFlip.Type_Vertical;
+						break
+				}
+				if(s){
+					var evt:ZEvent = new ZEvent(ZEvent.Change , s);
+					this.dispatchEvent(evt)
+				}
+			}
+			
+			private function onClick($e:MouseEvent):void{
+				var s:String = "";
+				switch($e.currentTarget){
+					case btn_select:
+						s = ZEvent.Image;
+						break;
+					case btn_url:
+						s = ZEvent.Selected;
+						break;
+					case btn_save:
+						s = ZEvent.Save;
+						break;
+					case btn_realSize:
+						s = Operation.RealSize
+						break
+					case btn_zoomSize:
+						s = Operation.ZoomSize
+						break;
+				}
+				if(s){
+					var evt:ZEvent = new ZEvent(s);
+					this.dispatchEvent(evt)
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:RadioButtonGroup id="group" change="onGroup(event)"/>
+	
+	
+	<mx:HBox 
+		horizontalGap="5" paddingTop="5" paddingLeft="10" height="{this.height/2}">
+		
+		<s:Button id="btn_select" label="选图" click="onClick(event)"/>
+		<s:Button id="btn_url" label="存储路径" click="onClick(event)"/>
+		
+		<s:RadioButton id="radio_normal" group="{group}" label="不翻转" selected="true" />
+		<s:RadioButton id="radio_horizontal" group="{group}" label="左右翻转"/>
+		<s:RadioButton id="radio_vertical" group="{group}" label="上下翻转"/>
+		
+		<s:Button id="btn_save" label="保存" click="onClick(event)"/>
+	</mx:HBox>
+	
+	<mx:HBox 
+		horizontalGap="5" paddingLeft="10" height="{this.height/2}">
+		<s:Button id="btn_realSize" label="原始大小" click="onClick(event)"/>
+		<s:Button id="btn_zoomSize" label="自适应大小" click="onClick(event)"/>
+	</mx:HBox>
+	
+	
+</mx:VBox>

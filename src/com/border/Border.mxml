@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Aman creat at 2018-9-18 下午4:06:33-->
-<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<mx:Canvas xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"  
-		 xmlns:ui="ui.*" xmlns:border="com.border.*" 
+		 xmlns:ui="ui.*" xmlns:border="com.border.*" xmlns:com="com.*"
+		 horizontalScrollPolicy="off" verticalScrollPolicy="off"
 		 backgroundAlpha="0"
 		 creationComplete="init(event)" 
-		 resize="onResize(event)" xmlns:com="com.*">
+		 resize="onResize(event)">
 	<fx:Script>
 		<![CDATA[
 			import com.ToolsInstance;
 			import com.aman.event.ZEvent;
-			import com.tools.DirectorySelecter;
 			
 			import mx.events.FlexEvent;
 			import mx.events.ResizeEvent;
 			
 			import ui.ImgCanvas;
-			
-			private var _selecter_dir:DirectorySelecter;
 			
 			[Bindable]
 			private var _isCut:Boolean = true;
@@ -27,8 +25,6 @@
 			
 			private function init(event:FlexEvent):void{
 				img = img_cut
-				
-				_selecter_dir = new DirectorySelecter();
 				
 				var a:Array = [Operation.SelectAddress , Operation.SelectImage , 
 					Operation.Save , Operation.RealSize , Operation.ZoomSize , ZEvent.In , ZEvent.Out];
@@ -44,7 +40,7 @@
 			private function onOperation($e:ZEvent):void{
 				switch($e.type){
 					case Operation.SelectAddress:
-						_selecter_dir.browseForDirectory("请选取文件夹");
+						ToolsInstance.directory.select()
 						break;
 					case Operation.SelectImage:
 						ToolsInstance.selecter.select(onSelecter);
@@ -63,19 +59,24 @@
 						break;
 					case ZEvent.Out:
 						_isCut = false;
-						img = img_cut
+						img = img_extension
 						onChange(null)
 						break;
 					case ZEvent.In:
 						_isCut = true;
-						img = img_extension
+						img = img_cut
 						onChange(null)
 						break;
 				}
 			}
 			
 			private function onChange($e:ZEvent):void{
-				var r:Rectangle = $e.data as Rectangle;
+				var r:Rectangle 
+				if($e){
+					r = $e.data as Rectangle;
+				}else{
+					r = oper.getValueRect()
+				}
 				img.change(r);
 			}
 			
@@ -84,14 +85,19 @@
 					case ZEvent.Loaded:
 						var b:BitmapData = $e.data as BitmapData;
 						img.bitmapData = b;
-						oper.setSize(b.width , b.height)
+						if(_isCut){
+							oper.setSize(b.width , b.height)
+						}else{
+							oper.setSize(300 , 300)
+						}
 						break;
 				}
 			}
 			
 			private function onResize($e:ResizeEvent=null):void{
 				if(this.initialized){
-					img.setSize(this.width , this.height-60);
+					img_extension.setSize(this.width , this.height-60);
+					img_cut.setSize(this.width , this.height-60);
 				}
 			}
 			
@@ -102,4 +108,4 @@
 	<border:ImageExtension id="img_extension" visible="{!_isCut}"/>
 	<border:Operation id="oper"
 					  bottom="0" width="100%" height="60"/>
-</s:BorderContainer>
+</mx:Canvas>

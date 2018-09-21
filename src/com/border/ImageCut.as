@@ -47,7 +47,7 @@ package com.border
 			_bmp.mask = _shp;
 		}
 		
-		override protected function resize():void{
+		/*override protected function resize():void{
 			if(!_bmp.bitmapData){
 				return
 			}
@@ -66,7 +66,7 @@ package com.border
 					_core.y = p.y;
 					break;
 			}
-		}
+		}*/
 		
 		override public function change($r:Rectangle=null):void{
 			if(!_bmp.bitmapData){

@@ -9,7 +9,7 @@ package com.tools
 		private var _listener:Function;
 		
 		public function DirectorySelecter(){
-			super(path);
+			super();
 			this.addEventListener(Event.SELECT , onSelected , false , 100);
 		}
 		

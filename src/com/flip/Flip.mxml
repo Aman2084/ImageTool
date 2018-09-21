@@ -1,9 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Aman creat at 2018-9-20 下午4:38:42-->
-<s:BorderContainer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<mx:Canvas xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				   xmlns:s="library://ns.adobe.com/flex/spark" 
-				   xmlns:mx="library://ns.adobe.com/flex/mx">
-	<fx:Declarations>
-		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
-	</fx:Declarations>
-</s:BorderContainer>
+				   xmlns:mx="library://ns.adobe.com/flex/mx"
+				   xmlns:flip="com.flip.*"
+				   horizontalScrollPolicy="off" verticalScrollPolicy="off"
+				   creationComplete="init(event)"
+				   resize="onResize(event)">
+	<fx:Script>
+		<![CDATA[
+			import com.ToolsInstance;
+			import com.aman.event.ZEvent;
+			import com.border.Operation;
+			
+			import mx.events.FlexEvent;
+			import mx.events.ResizeEvent;
+			
+			private function init(event:FlexEvent):void{
+				var a:Array = [ZEvent.Image , ZEvent.Selected , ZEvent.Save , ZEvent.Change ,
+					Operation.RealSize , Operation.ZoomSize]
+				for (var i:int = 0; i < a.length; i++){
+					bar.addEventListener(a[i] , onBar);
+				}
+				onResize();
+			}
+			
+			private function onResize($e:ResizeEvent=null):void{
+				if(this.initialized){
+					img.setSize(this.width , this.height-60);
+				}
+			}
+			
+			private function onBar($e:ZEvent):void{
+					switch($e.type){
+						case ZEvent.Image:
+							ToolsInstance.selecter.select(onSelecter);
+							break;
+						case ZEvent.Selected:
+							ToolsInstance.directory.select()
+							break;
+						case ZEvent.Save:
+							var b:BitmapData = img.getBmd();
+							if(b){
+								ToolsInstance.saver.save(b , ToolsInstance.selecter.fileName);
+							}
+							break;
+						case ZEvent.Change:
+							img.type = $e.data as String;
+							break;
+						case Operation.RealSize:
+							img.displayType = ImageDisplay.RealSize;
+							break
+						case Operation.ZoomSize:
+							img.displayType = ImageDisplay.ZoomSize;
+							break
+					}
+			}
+			
+			private function onSelecter($e:ZEvent):void{
+				switch($e.type){
+					case ZEvent.Loaded:
+						var b:BitmapData = $e.data as BitmapData;
+						img.bitmapData = b;
+						break;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+		
+	<flip:ImageFlip id="img" width="100%" height="{this.height-60}"/>
+	<flip:FlipBar id="bar" bottom="0" width="100%" height="60"/>
+</mx:Canvas>

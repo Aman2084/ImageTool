@@ -38,6 +38,11 @@ package com.flip
 			super();
 		}
 		
+		override protected function addChildren():void{
+			super.addChildren();
+			_shp_bg.visible = false;
+		}
+		
 		override public function change($r:Rectangle=null):void{
 			if(!_bmp.bitmapData){
 				return;
@@ -52,6 +57,7 @@ package com.flip
 				_bmp.bitmapData = _bmd_target;
 			}
 			
+			_bmd_target.fillRect(_bmd_target.rect , 0x00000000);
 			switch(_type){
 				case Type_Normal:
 					_bmd_target.copyPixels(_bmd_source , _bmd_target.rect , new Point());

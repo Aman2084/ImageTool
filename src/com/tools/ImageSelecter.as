@@ -63,7 +63,9 @@ package com.tools
 		}
 		
 		public function get fileName():String{
-			return _selecter_image.name;
+			var s:String =_selecter_image.name;
+			s = s.replace(_selecter_image.type , "");
+			return s;
 		}
 	}
 }
