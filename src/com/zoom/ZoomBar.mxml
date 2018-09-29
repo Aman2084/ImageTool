@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Aman creat at 2018-9-29 下午12:16:16-->
+<mx:HBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 horizontalScrollPolicy="off" verticalScrollPolicy="off"
+		 backgroundColor="0x009cff"
+		 horizontalGap="8" paddingTop="10" paddingLeft="10">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.aman.event.ZEvent;
+			
+			/**原始宽度*/
+			private var _w:int = 100;
+			/**原始高度*/
+			private var _h:int = 100;
+			/**当前宽度*/
+			[Bindable]
+			private var _iw:int = 100;
+			/**当前高度*/
+			[Bindable]
+			private var _ih:int = 100;
+			
+			/**宽高比*/
+			private var _ratio:Number = 1;
+			
+			private function onClick($e:MouseEvent):void{
+				var s:String;
+				var data:Object;
+				switch($e.currentTarget){
+					case btn_select:
+						s = ZEvent.Image;
+						break;
+					case btn_url:
+						s = ZEvent.Selected;
+						break;
+					case btn_noZoom:
+						_iw = _w;
+						_ih = _h;
+						s = ZEvent.Size;
+						data = new Rectangle(0 , 0 , _w , _h)
+						break
+					case btn_save:
+						s = ZEvent.Save;
+						break;
+				}
+				if(s){
+					var evt:ZEvent = new ZEvent(s , data);
+					this.dispatchEvent(evt)
+				}
+			}
+			
+//计算宽高变化
+			private function onInput($e:FocusEvent):void{
+				var t:TextInput = $e.currentTarget as TextInput;
+				var n:int = int(t.text);
+				n = Math.max(1 , n);
+				n = Math.min(2880 , n);
+				var m:int = $e.currentTarget==input_width ? _iw : _ih;
+				if(n==m){
+					return
+				}
+				if($e.currentTarget==input_width){
+					_iw = n;
+					if(check.selected){
+						_ih = Math.round(_iw / _ratio);
+						_ih = Math.max(1 , _ih);
+					}
+				}else{
+					_ih = n;
+					if(check.selected){
+						_iw = Math.round(_ih * _ratio);
+						_iw = Math.max(1 , _iw);
+					}
+				}
+				var r:Rectangle = new Rectangle(0 , 0 , _iw , _ih);
+				var evt:ZEvent = new ZEvent(ZEvent.Size , r);
+				dispatchEvent(evt);
+			}
+			
+			private function onKeyDown($e:KeyboardEvent):void{
+				var t:TextInput = $e.currentTarget as TextInput;
+				switch($e.keyCode){
+					case Keyboard.ENTER:
+						stage.focus = null
+						break
+					case Keyboard.ESCAPE:
+						if(t==input_width){
+							_iw = _iw+1;
+							_iw = _iw - 1;
+						}else{
+							_ih = _ih+1;
+							_ih = _ih - 1;
+						}
+						stage.focus = null
+						break
+				}
+			}
+			
+			
+			public function setWH($w:int , $h:int):void{
+				_w = _iw = $w;
+				_h = _ih = $h;
+				onCheck()
+			}
+			
+			private function onCheck($e:Event=null):void{
+				if(check.selected){
+					_ratio = _iw  / _ih;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Button id="btn_select" label="选图" click="onClick(event)" />
+	<s:Button id="btn_url" label="存储路径" click="onClick(event)"/>
+	<s:Button id="btn_noZoom" label="原始宽高" click="onClick(event)"/>
+	
+	<s:Label text="宽度" paddingTop="5"/>
+	<s:TextInput id="input_width" restrict="0-9" width="80" text="{_iw}" 
+				 focusOut="onInput(event)" keyDown="onKeyDown(event)"/>
+	<s:Label text="高度" paddingTop="5"/>
+	<s:TextInput id="input_height" restrict="0-9" width="80" text="{_ih}"
+				 focusOut="onInput(event)" keyDown="onKeyDown(event)"/>
+	
+	<s:CheckBox id="check" label="锁定宽高比" change="onCheck(event)"/>
+	
+	<s:Button id="btn_save" label="保存" click="onClick(event)"/>
+</mx:HBox>

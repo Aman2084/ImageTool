@@ -69,7 +69,7 @@ package com.tools
 			Alert.show("文件已存在！" , "" ,Alert.OK|Alert.CANCEL|Alert.YES , null , 
 				function($e:CloseEvent):void{
 					switch($e.detail){
-						case Alert.okLabel:
+						case Alert.OK:
 							saveFile(f);
 							break
 						case Alert.YES:

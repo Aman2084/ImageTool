@@ -3,7 +3,7 @@
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
 					   xmlns:mx="library://ns.adobe.com/flex/mx" 
 					   xmlns:local="*" xmlns:ui="ui.*"
-					   showStatusBar="false" backgroundColor="#666666" xmlns:border="com.border.*" creationComplete="inited()" xmlns:com="com.*" xmlns:flip="com.flip.*">
+					   showStatusBar="false" backgroundColor="#666666" xmlns:border="com.border.*" creationComplete="inited()" xmlns:com="com.*" xmlns:flip="com.flip.*" xmlns:zoom="com.zoom.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -15,8 +15,9 @@
 	
 	
 	
-	<mx:TabNavigator width="100%" height="100%" selectedIndex="0" backgroundAlpha="0">
+	<mx:TabNavigator width="100%" height="100%" selectedIndex="1" backgroundAlpha="0">
 		<border:Border id="b" label="边缘处理" width="100%" height="100%"/>
+		<zoom:Zoom  label="缩放" width="100%" height="100%"/>
 		<flip:Flip label="翻转" width="100%" height="100%"/>
 	</mx:TabNavigator>
 	
