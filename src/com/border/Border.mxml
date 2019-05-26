@@ -47,6 +47,16 @@
 						break
 					case Operation.Save: 
 						var b:BitmapData = img.getBmd();
+						var url:String = ToolsInstance.directory.path
+						if(!url){
+							ToolsInstance.directory.path = ToolsInstance.selecter.parentFloder;
+						}
+						var f:File = new File(url);
+						if(!f.exists){
+							ToolsInstance.directory.path = ToolsInstance.selecter.parentFloder;
+						}
+						
+						
 						if(b){
 							ToolsInstance.saver.save(b , ToolsInstance.selecter.fileName);
 						}

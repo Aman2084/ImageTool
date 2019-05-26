@@ -67,5 +67,9 @@ package com.tools
 			s = s.replace(_selecter_image.type , "");
 			return s;
 		}
+		
+		public function get parentFloder():String{
+			return _selecter_image.parent.nativePath
+		}
 	}
 }
