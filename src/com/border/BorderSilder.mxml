@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 verticalScrollPolicy="off" horizontalScrollPolicy="off"
+		 width="100%" height="100%"
+		 verticalAlign="middle" horizontalGap="6">
+	<fx:Declarations>
+		<!-- 将非可视元素（例如服务、值对象）放在此处 -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import spark.events.TextOperationEvent;
+			
+//			[Bindable]
+//			private _label:String = ""
+			
+			private function onChange($e:Event):void{
+				input.text = slider.value.toString();
+				update();
+			}
+			
+			
+			protected function onInput(event:Event):void{
+				slider.value = int(input.text)
+				update();
+			}
+			
+			override public function set label($value:String):void{
+				super.label = $value
+			}
+
+			private function update():void{
+				var e:Event = new Event(Event.CHANGE);
+				this.dispatchEvent(e);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Label id="txt" text="{this.label}"/>
+	
+	<s:TextInput id="input" width="30" change="onInput(event)" text="0" restrict="0-9"/>
+	
+	<mx:Slider id="slider" width="100%"
+			   snapInterval="1" thumbDrag="onChange(event)" change="onChange(event)"/>
+</mx:HBox>

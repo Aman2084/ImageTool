@@ -15,7 +15,7 @@
 	
 	
 	
-	<mx:TabNavigator width="100%" height="100%" selectedIndex="1" backgroundAlpha="0">
+	<mx:TabNavigator width="100%" height="100%" selectedIndex="0" backgroundAlpha="0">
 		<border:Border id="b" label="边缘处理" width="100%" height="100%"/>
 		<zoom:Zoom  label="缩放" width="100%" height="100%"/>
 		<flip:Flip label="翻转" width="100%" height="100%"/>

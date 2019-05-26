@@ -3,20 +3,27 @@
 <mx:HBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		   xmlns:s="library://ns.adobe.com/flex/spark" 
 		   xmlns:mx="library://ns.adobe.com/flex/mx" 
-		   backgroundColor="0x009cff" >
+		   backgroundColor="0x009cff" xmlns:border="com.border.*"
+		   creationComplete="init(event)">
 	
 	<fx:Script>
 		<![CDATA[
 			import com.aman.event.ZEvent;
 			
-			import mx.events.SliderEvent;
-			
+			import mx.events.FlexEvent;
 			
 			public static const SelectImage:String = "selectImage";
 			public static const SelectAddress:String = "selectAddress";
 			public static const Save:String = "save";
 			public static const RealSize:String = "realSize";
 			public static const ZoomSize:String = "zoomSize";
+			
+			private function init(event:FlexEvent):void{
+				s_left.addEventListener(Event.CHANGE , onChange);
+				s_right.addEventListener(Event.CHANGE , onChange);
+				s_top.addEventListener(Event.CHANGE , onChange);
+				s_bottom.addEventListener(Event.CHANGE , onChange);
+			}
 			
 			private function onClick($e:Event):void{
 				var s:String = "";
@@ -56,16 +63,16 @@
 			
 //interface
 			public function setSize($width:int, $height:int):void{
-				slider_left.maximum = $width;
-				slider_right.maximum = $width
-				slider_top.maximum = $height;
-				slider_bottom.maximum = $height
+				s_left.slider.maximum = $width;
+				s_right.slider.maximum = $width
+				s_top.slider.maximum = $height;
+				s_bottom.slider.maximum = $height
 			}
 			
 			public function getValueRect():Rectangle{
-				var r:Rectangle = new Rectangle(slider_left.value , slider_top.value)
-				r.right = slider_right.value;
-				r.bottom = slider_bottom.value;
+				var r:Rectangle = new Rectangle(s_left.slider.value , s_top.slider.value)
+				r.right = s_right.slider.value;
+				r.bottom = s_bottom.slider.value;
 				return r;
 			}
 			
@@ -93,23 +100,37 @@
 	<mx:Canvas id="core_silder"
 			   horizontalScrollPolicy="off" verticalScrollPolicy="off"
 			  width="100%" height="100%">
-		<s:Label id="label_top" x="10" y="6" text="上"/>
-		<s:Label id="label_bottom" x="{core_silder.width/2+3}" y="{label_top.y}" text="下"/>
-		<s:Label id="label_left" x="{label_top.x}" y="{label_top.y + core_silder.height/2}" text="左"/>
-		<s:Label id="label_right" x="{label_bottom.x}" y="{label_left.y}" text="右"/>
 		
-		<mx:Slider id="slider_top" 
+		<border:BorderSilder id="s_top"  label="上"
+							 x="0" y="6" width="{core_silder.width/2}" height="{core_silder.height/2-12}"/>
+		<border:BorderSilder id="s_bottom"  label="下"
+							 x="{s_top.x+ s_top.width + 6}" y="6" width="{core_silder.width/2}" height="{core_silder.height/2-12}"/>
+		<border:BorderSilder id="s_left"  label="左"
+							 x="0" y="{core_silder.height/2+6}" width="{core_silder.width/2}" height="{core_silder.height/2-12}"/>
+		<border:BorderSilder id="s_right"  label="右"
+							 x="{s_top.x+ s_top.width+6}" y="{core_silder.height/2+6}" width="{core_silder.width/2}" height="{core_silder.height/2-12}"/>
+		                                                                                                 
+		<!--
+		<s:Label id="label_top" x="10" y="6" text="上" visible="false"/>
+		<s:Label id="label_bottom" x="{core_silder.width/2+3}" y="{label_top.y}" text="下" visible="false"/>
+		<s:Label id="label_left" x="{label_top.x}" y="{label_top.y + core_silder.height/2}" text="左" visible="false"/>
+		<s:Label id="label_right" x="{label_bottom.x}" y="{label_left.y}" text="右" visible="false"/>
+		
+		<mx:Slider id="slider_top" visible="false"
 				   y="{label_top.y+3}" x="{label_top.x+20}" width="{core_silder.width/2 - 30}"
 				   snapInterval="1" thumbDrag="onChange(event)" change="onChange(event)"/>
-		<mx:Slider id="slider_bottom" 
+		<mx:Slider id="slider_bottom"  visible="false"
 				   y="{slider_top.y}" x="{label_bottom.x+20}" width="{slider_top.width}"
 				   snapInterval="1" thumbDrag="onChange(event)" change="onChange(event)"/>
-		<mx:Slider id="slider_left" 
+		<mx:Slider id="slider_left"  visible="false"
 				   y="{label_left.y+3}" x="{label_left.x+20}" width="{slider_top.width}"
 				   snapInterval="1" thumbDrag="onChange(event)" change="onChange(event)"/>
-		<mx:Slider id="slider_right"  
+		<mx:Slider id="slider_right"  visible="false"
 				   y="{slider_left.y}" x="{label_right.x+20}" width="{slider_top.width}"
 				   snapInterval="1" thumbDrag="onChange(event)" change="onChange(event)"/>
+		
+		-->
+		
 	</mx:Canvas>
 
 </mx:HBox>

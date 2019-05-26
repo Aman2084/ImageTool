@@ -88,6 +88,7 @@ package com.border
 			}
 			Utils_UI.setPosAndSize(_shp , _rect);
 			Utils_UI.setPosAndSize(_shp_bg , _rect);
+			this.toolTip = _rect.toString();
 		}
 		
 		override public function getBmd():BitmapData{

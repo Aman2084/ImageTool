@@ -24,7 +24,7 @@
 			private var img:ImgCanvas
 			
 			private function init(event:FlexEvent):void{
-				img = img_cut
+				img = img_cut;
 				
 				var a:Array = [Operation.SelectAddress , Operation.SelectImage , 
 					Operation.Save , Operation.RealSize , Operation.ZoomSize , ZEvent.In , ZEvent.Out];
@@ -40,7 +40,7 @@
 			private function onOperation($e:ZEvent):void{
 				switch($e.type){
 					case Operation.SelectAddress:
-						ToolsInstance.directory.select()
+						ToolsInstance.directory.select();
 						break;
 					case Operation.SelectImage:
 						ToolsInstance.selecter.select(onSelecter);
@@ -100,7 +100,6 @@
 					img_cut.setSize(this.width , this.height-60);
 				}
 			}
-			
 		]]>
 	</fx:Script>
 	
